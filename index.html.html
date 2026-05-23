@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NutriCore — Consultoria Esportiva</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --dark:      #0f1f17;
+    --dark2:     #1a3028;
+    --mid:       #2d6a4f;
+    --lime:      #52b788;
+    --light:     #d8f3dc;
+    --cream:     #f8fdf9;
+    --white:     #ffffff;
+    --text:      #1b2e24;
+    --muted:     #5a7a68;
+    --gold:      #c9a84c;
+    --gold-light:#f0d98a;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--text);
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 48px;
+    background: rgba(15, 31, 23, 0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(82,183,136,0.15);
+  }
+  .nav-logo {
+    display: flex; align-items: center; gap: 12px;
+  }
+  .nav-logo-icon {
+    width: 36px; height: 36px; background: var(--white);
+    border-radius: 8px; display: flex; align-items: center;
+    justify-content: center; font-size: 20px;
+  }
+  .nav-logo-text {
+    font-family: 'DM Serif Display', serif;
+    color: var(--white); font-size: 18px; letter-spacing: 0.08em;
+  }
+  .nav-cta {
+    background: var(--lime); color: var(--dark); font-weight: 700;
+    padding: 10px 24px; border-radius: 100px; font-size: 13px;
+    text-decoration: none; letter-spacing: 0.04em;
+    transition: all 0.2s;
+  }
+  .nav-cta:hover { background: var(--light); transform: translateY(-1px); }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    background: var(--dark);
+    position: relative;
+    display: flex; align-items: center;
+    overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 60% 80% at 80% 50%, rgba(45,106,79,0.35) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 40% at 20% 80%, rgba(82,183,136,0.12) 0%, transparent 60%);
+  }
+  .hero-grid {
+    position: absolute; inset: 0; opacity: 0.04;
+    background-image: linear-gradient(var(--lime) 1px, transparent 1px),
+                      linear-gradient(90deg, var(--lime) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+  .hero-content {
+    position: relative; z-index: 2;
+    max-width: 1100px; margin: 0 auto;
+    padding: 120px 48px 80px;
+    display: grid; grid-template-columns: 1fr 420px; gap: 80px; align-items: center;
+  }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(82,183,136,0.15); border: 1px solid rgba(82,183,136,0.3);
+    border-radius: 100px; padding: 6px 16px; margin-bottom: 28px;
+    color: var(--lime); font-size: 12px; font-weight: 600; letter-spacing: 0.1em;
+  }
+  .hero-badge span { width: 6px; height: 6px; background: var(--lime); border-radius: 50%; animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(1.3)} }
+
+  .hero h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(42px, 5vw, 64px);
+    line-height: 1.1; color: var(--white);
+    margin-bottom: 24px;
+  }
+  .hero h1 em { color: var(--lime); font-style: italic; }
+  .hero-sub {
+    font-size: 18px; color: rgba(255,255,255,0.65);
+    line-height: 1.7; margin-bottom: 40px;
+    font-weight: 300;
+  }
+  .hero-actions { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: var(--lime); color: var(--dark);
+    padding: 16px 32px; border-radius: 100px;
+    font-weight: 700; font-size: 15px; text-decoration: none;
+    transition: all 0.25s; letter-spacing: 0.02em;
+  }
+  .btn-primary:hover { background: var(--light); transform: translateY(-2px); box-shadow: 0 12px 32px rgba(82,183,136,0.3); }
+  .btn-ghost {
+    color: rgba(255,255,255,0.6); font-size: 14px;
+    text-decoration: none; display: flex; align-items: center; gap: 6px;
+    transition: color 0.2s;
+  }
+  .btn-ghost:hover { color: var(--lime); }
+
+  /* Hero card */
+  .hero-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(82,183,136,0.2);
+    border-radius: 24px; padding: 32px;
+    backdrop-filter: blur(8px);
+  }
+  .hero-card-label {
+    color: var(--lime); font-size: 11px; font-weight: 700;
+    letter-spacing: 0.2em; margin-bottom: 20px;
+  }
+  .hero-stat {
+    display: flex; align-items: baseline; gap: 8px; margin-bottom: 8px;
+  }
+  .hero-stat-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 52px; color: var(--white); line-height: 1;
+  }
+  .hero-stat-unit { color: var(--lime); font-size: 18px; font-weight: 600; }
+  .hero-stat-desc { color: rgba(255,255,255,0.5); font-size: 13px; margin-bottom: 24px; }
+  .hero-divider { height: 1px; background: rgba(82,183,136,0.15); margin: 24px 0; }
+  .hero-includes { display: flex; flex-direction: column; gap: 12px; }
+  .hero-include-item {
+    display: flex; align-items: center; gap: 12px;
+    color: rgba(255,255,255,0.75); font-size: 14px;
+  }
+  .hero-include-item .check {
+    width: 20px; height: 20px; background: rgba(82,183,136,0.2);
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    color: var(--lime); font-size: 11px; flex-shrink: 0;
+  }
+
+  /* ── SECTION COMMONS ── */
+  section { padding: 100px 48px; }
+  .container { max-width: 1100px; margin: 0 auto; }
+  .section-tag {
+    display: inline-block; color: var(--lime); font-size: 11px;
+    font-weight: 700; letter-spacing: 0.2em; margin-bottom: 16px;
+    text-transform: uppercase;
+  }
+  .section-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(32px, 4vw, 48px); line-height: 1.15;
+    color: var(--text); margin-bottom: 16px;
+  }
+  .section-title em { color: var(--mid); font-style: italic; }
+  .section-sub {
+    font-size: 17px; color: var(--muted); line-height: 1.7;
+    max-width: 560px; font-weight: 300;
+  }
+
+  /* ── PAIN SECTION ── */
+  .pain { background: var(--dark2); }
+  .pain .section-title { color: var(--white); }
+  .pain .section-sub { color: rgba(255,255,255,0.5); }
+  .pain-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 24px; margin-top: 56px;
+  }
+  .pain-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 16px; padding: 28px;
+    transition: border-color 0.3s;
+  }
+  .pain-card:hover { border-color: rgba(82,183,136,0.3); }
+  .pain-icon { font-size: 28px; margin-bottom: 16px; }
+  .pain-card h3 { color: var(--white); font-size: 16px; font-weight: 600; margin-bottom: 10px; }
+  .pain-card p { color: rgba(255,255,255,0.45); font-size: 14px; line-height: 1.6; font-weight: 300; }
+
+  /* ── METHOD ── */
+  .method { background: var(--cream); }
+  .method-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 80px;
+    align-items: center; margin-top: 60px;
+  }
+  .method-steps { display: flex; flex-direction: column; gap: 0; }
+  .method-step {
+    display: flex; gap: 20px; padding: 28px 0;
+    border-bottom: 1px solid rgba(45,106,79,0.1);
+    position: relative;
+  }
+  .method-step:last-child { border-bottom: none; }
+  .step-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 36px; color: var(--light); line-height: 1;
+    min-width: 48px; font-weight: 400;
+  }
+  .step-content h3 { font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+  .step-content p { font-size: 14px; color: var(--muted); line-height: 1.6; font-weight: 300; }
+  .method-visual {
+    background: var(--dark);
+    border-radius: 24px; padding: 40px;
+    position: relative; overflow: hidden;
+  }
+  .method-visual-bg {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 80% 20%, rgba(82,183,136,0.2), transparent 60%);
+  }
+  .method-visual-content { position: relative; z-index: 1; }
+  .method-visual-label {
+    color: var(--lime); font-size: 10px; font-weight: 700;
+    letter-spacing: 0.2em; margin-bottom: 32px;
+  }
+  .result-bar { margin-bottom: 20px; }
+  .result-bar-label {
+    display: flex; justify-content: space-between;
+    color: rgba(255,255,255,0.7); font-size: 13px; margin-bottom: 8px;
+  }
+  .result-bar-track {
+    height: 6px; background: rgba(255,255,255,0.08); border-radius: 100px; overflow: hidden;
+  }
+  .result-bar-fill {
+    height: 100%; border-radius: 100px;
+    background: linear-gradient(90deg, var(--mid), var(--lime));
+    animation: fillBar 1.5s ease-out forwards;
+    width: 0;
+  }
+  @keyframes fillBar { to { width: var(--w); } }
+  .method-testimonial {
+    margin-top: 32px; padding: 20px;
+    background: rgba(82,183,136,0.08);
+    border: 1px solid rgba(82,183,136,0.2);
+    border-radius: 12px;
+  }
+  .method-testimonial p {
+    color: rgba(255,255,255,0.75); font-size: 13px;
+    line-height: 1.6; font-style: italic; margin-bottom: 12px;
+  }
+  .method-testimonial-author { color: var(--lime); font-size: 12px; font-weight: 600; }
+
+  /* ── WHAT'S INCLUDED ── */
+  .includes { background: var(--white); }
+  .includes-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 24px; margin-top: 56px;
+  }
+  .include-card {
+    border: 1px solid rgba(45,106,79,0.12);
+    border-radius: 20px; padding: 32px;
+    transition: all 0.3s; position: relative; overflow: hidden;
+  }
+  .include-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, var(--mid), var(--lime));
+    transform: scaleX(0); transform-origin: left; transition: transform 0.3s;
+  }
+  .include-card:hover { border-color: rgba(82,183,136,0.4); transform: translateY(-4px); box-shadow: 0 16px 40px rgba(45,106,79,0.1); }
+  .include-card:hover::before { transform: scaleX(1); }
+  .include-icon {
+    width: 52px; height: 52px; border-radius: 14px;
+    background: var(--light); display: flex; align-items: center;
+    justify-content: center; font-size: 24px; margin-bottom: 20px;
+  }
+  .include-card h3 { font-size: 17px; font-weight: 700; color: var(--text); margin-bottom: 10px; }
+  .include-card p { font-size: 14px; color: var(--muted); line-height: 1.65; font-weight: 300; }
+
+  /* ── PRICING ── */
+  .pricing { background: var(--cream); }
+  .pricing-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 24px; margin-top: 56px; max-width: 780px; margin-left: auto; margin-right: auto;
+    margin-top: 56px;
+  }
+  .pricing-card {
+    border-radius: 24px; padding: 40px;
+    position: relative; overflow: hidden;
+    transition: transform 0.3s;
+  }
+  .pricing-card:hover { transform: translateY(-4px); }
+  .pricing-card.standard {
+    background: var(--white);
+    border: 1px solid rgba(45,106,79,0.15);
+  }
+  .pricing-card.featured {
+    background: var(--dark);
+    border: 2px solid var(--lime);
+    box-shadow: 0 20px 60px rgba(82,183,136,0.2);
+  }
+  .pricing-badge {
+    position: absolute; top: 20px; right: 20px;
+    background: var(--gold); color: var(--dark);
+    font-size: 10px; font-weight: 700; padding: 4px 12px;
+    border-radius: 100px; letter-spacing: 0.1em;
+  }
+  .pricing-plan {
+    font-size: 12px; font-weight: 700; letter-spacing: 0.15em;
+    margin-bottom: 24px;
+  }
+  .pricing-card.standard .pricing-plan { color: var(--muted); }
+  .pricing-card.featured .pricing-plan { color: var(--lime); }
+  .pricing-price {
+    display: flex; align-items: baseline; gap: 6px; margin-bottom: 6px;
+  }
+  .price-currency { font-size: 20px; font-weight: 600; }
+  .price-amount {
+    font-family: 'DM Serif Display', serif; font-size: 56px; line-height: 1;
+  }
+  .price-period { font-size: 14px; font-weight: 300; }
+  .pricing-card.standard .price-currency,
+  .pricing-card.standard .price-amount,
+  .pricing-card.standard .price-period { color: var(--text); }
+  .pricing-card.featured .price-currency,
+  .pricing-card.featured .price-amount,
+  .pricing-card.featured .price-period { color: var(--white); }
+  .pricing-note { font-size: 12px; margin-bottom: 32px; }
+  .pricing-card.standard .pricing-note { color: var(--muted); }
+  .pricing-card.featured .pricing-note { color: rgba(255,255,255,0.45); }
+  .pricing-features { display: flex; flex-direction: column; gap: 14px; margin-bottom: 32px; }
+  .pricing-feature {
+    display: flex; align-items: center; gap: 12px; font-size: 14px;
+  }
+  .pricing-card.standard .pricing-feature { color: var(--text); }
+  .pricing-card.featured .pricing-feature { color: rgba(255,255,255,0.8); }
+  .feat-check {
+    width: 20px; height: 20px; border-radius: 50%; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center; font-size: 10px;
+  }
+  .pricing-card.standard .feat-check { background: var(--light); color: var(--mid); }
+  .pricing-card.featured .feat-check { background: rgba(82,183,136,0.2); color: var(--lime); }
+  .pricing-divider { height: 1px; margin: 20px 0; }
+  .pricing-card.standard .pricing-divider { background: rgba(45,106,79,0.1); }
+  .pricing-card.featured .pricing-divider { background: rgba(255,255,255,0.08); }
+  .btn-pricing-standard {
+    display: block; text-align: center;
+    border: 2px solid var(--mid); color: var(--mid);
+    padding: 14px; border-radius: 100px;
+    font-weight: 700; font-size: 14px; text-decoration: none;
+    transition: all 0.2s; letter-spacing: 0.04em;
+  }
+  .btn-pricing-standard:hover { background: var(--mid); color: var(--white); }
+  .btn-pricing-featured {
+    display: block; text-align: center;
+    background: var(--lime); color: var(--dark);
+    padding: 14px; border-radius: 100px;
+    font-weight: 700; font-size: 14px; text-decoration: none;
+    transition: all 0.2s; letter-spacing: 0.04em;
+  }
+  .btn-pricing-featured:hover { background: var(--light); transform: translateY(-1px); }
+
+  /* ── FAQ ── */
+  .faq { background: var(--white); }
+  .faq-list { max-width: 680px; margin: 56px auto 0; display: flex; flex-direction: column; gap: 0; }
+  .faq-item {
+    border-bottom: 1px solid rgba(45,106,79,0.1); padding: 24px 0; cursor: pointer;
+  }
+  .faq-question {
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 16px; font-weight: 600; color: var(--text);
+  }
+  .faq-icon { color: var(--lime); font-size: 20px; transition: transform 0.3s; }
+  .faq-answer {
+    font-size: 14px; color: var(--muted); line-height: 1.7;
+    margin-top: 14px; font-weight: 300; display: none;
+  }
+  .faq-item.open .faq-icon { transform: rotate(45deg); }
+  .faq-item.open .faq-answer { display: block; }
+
+  /* ── CTA FINAL ── */
+  .cta-final {
+    background: var(--dark);
+    text-align: center; padding: 120px 48px;
+    position: relative; overflow: hidden;
+  }
+  .cta-final-bg {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 70% 70% at 50% 50%, rgba(45,106,79,0.3), transparent 70%);
+  }
+  .cta-final-content { position: relative; z-index: 1; max-width: 600px; margin: 0 auto; }
+  .cta-final h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(32px, 4vw, 52px); color: var(--white);
+    line-height: 1.15; margin-bottom: 20px;
+  }
+  .cta-final h2 em { color: var(--lime); font-style: italic; }
+  .cta-final p { color: rgba(255,255,255,0.55); font-size: 17px; margin-bottom: 40px; font-weight: 300; }
+  .btn-final {
+    display: inline-flex; align-items: center; gap: 12px;
+    background: var(--lime); color: var(--dark);
+    padding: 20px 40px; border-radius: 100px;
+    font-weight: 700; font-size: 16px; text-decoration: none;
+    transition: all 0.25s; letter-spacing: 0.04em;
+  }
+  .btn-final:hover { background: var(--light); transform: translateY(-2px); box-shadow: 0 16px 40px rgba(82,183,136,0.35); }
+
+  /* ── FOOTER ── */
+  footer {
+    background: #080f0b; padding: 32px 48px;
+    display: flex; justify-content: space-between; align-items: center;
+    border-top: 1px solid rgba(82,183,136,0.1);
+  }
+  .footer-logo { font-family: 'DM Serif Display', serif; color: var(--white); font-size: 16px; }
+  .footer-copy { color: rgba(255,255,255,0.25); font-size: 12px; }
+
+  /* ── ANIMATIONS ── */
+  .fade-up {
+    opacity: 0; transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    nav { padding: 14px 20px; }
+    section { padding: 70px 20px; }
+    .hero-content { grid-template-columns: 1fr; padding: 100px 20px 60px; gap: 40px; }
+    .hero-card { display: none; }
+    .pain-grid, .includes-grid { grid-template-columns: 1fr; }
+    .method-grid { grid-template-columns: 1fr; gap: 40px; }
+    .pricing-grid { grid-template-columns: 1fr; }
+    footer { flex-direction: column; gap: 12px; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">
+    <div class="nav-logo-icon">🍏</div>
+    <span class="nav-logo-text">NUTRICORE</span>
+  </div>
+  <a href="https://wa.me/5566996035654?text=Olá!%20Quero%20saber%20mais%20sobre%20a%20consultoria%20NutriCore." class="nav-cta" target="_blank">Falar no WhatsApp</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-content">
+    <div class="fade-up">
+      <div class="hero-badge"><span></span> CONSULTORIA ESPORTIVA ONLINE</div>
+      <h1>Emagreça de forma <em>inteligente</em> e definitiva</h1>
+      <p class="hero-sub">Treino personalizado + dieta + acompanhamento direto pelo WhatsApp. Uma consultoria baseada em ciência, feita para o seu corpo e a sua rotina.</p>
+      <div class="hero-actions">
+        <a href="https://wa.me/5566996035654?text=Olá!%20Quero%20saber%20mais%20sobre%20a%20consultoria%20NutriCore." class="btn-primary" target="_blank">
+          💬 Quero começar agora
+        </a>
+        <a href="#planos" class="btn-ghost">Ver planos ↓</a>
+      </div>
+    </div>
+    <div class="hero-card fade-up" style="transition-delay:0.2s">
+      <div class="hero-card-label">O QUE VOCÊ RECEBE</div>
+      <div class="hero-stat">
+        <span class="hero-stat-num">100%</span>
+        <span class="hero-stat-unit">seu</span>
+      </div>
+      <div class="hero-stat-desc">Treino e dieta personalizados para você — não um template genérico.</div>
+      <div class="hero-divider"></div>
+      <div class="hero-includes">
+        <div class="hero-include-item"><div class="check">✓</div> Ficha de treino completa e personalizada</div>
+        <div class="hero-include-item"><div class="check">✓</div> Plano alimentar adaptado à sua rotina</div>
+        <div class="hero-include-item"><div class="check">✓</div> Suporte via WhatsApp durante todo o plano</div>
+        <div class="hero-include-item"><div class="check">✓</div> Correção de execução dos exercícios</div>
+        <div class="hero-include-item"><div class="check">✓</div> Ajustes e atualizações mensais</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PAIN -->
+<section class="pain">
+  <div class="container">
+    <div class="fade-up">
+      <div class="section-tag">VOCÊ SE IDENTIFICA?</div>
+      <h2 class="section-title" style="color:var(--white)">Por que a maioria não <em style="color:var(--lime)">consegue emagrecer</em></h2>
+      <p class="section-sub">Não é falta de força de vontade. É falta de método.</p>
+    </div>
+    <div class="pain-grid">
+      <div class="pain-card fade-up">
+        <div class="pain-icon">🔄</div>
+        <h3>Treino sem progressão</h3>
+        <p>Faz os mesmos exercícios há meses e o corpo simplesmente parou de responder. Sem progressão de carga, não há estímulo real.</p>
+      </div>
+      <div class="pain-card fade-up" style="transition-delay:0.1s">
+        <div class="pain-icon">🍽️</div>
+        <h3>Dieta que não se encaixa na vida</h3>
+        <p>Planos alimentares genéricos que ignoram sua rotina, preferências e realidade do dia a dia. Impossível de manter.</p>
+      </div>
+      <div class="pain-card fade-up" style="transition-delay:0.2s">
+        <div class="pain-icon">❓</div>
+        <h3>Sem acompanhamento real</h3>
+        <p>Treinar sozinho, sem saber se está executando certo, sem quem te oriente quando trava. A dúvida paralisa.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- METHOD -->
+<section class="method">
+  <div class="container">
+    <div class="method-grid">
+      <div class="fade-up">
+        <div class="section-tag">NOSSA METODOLOGIA</div>
+        <h2 class="section-title">Ciência aplicada ao <em>seu corpo</em></h2>
+        <p class="section-sub" style="margin-bottom:0">Cada treino é construído em cima de evidências — não de modismos.</p>
+        <div class="method-steps">
+          <div class="method-step">
+            <div class="step-num">01</div>
+            <div class="step-content">
+              <h3>Anamnese completa</h3>
+              <p>Antes de montar qualquer treino, entendemos sua saúde, histórico, limitações, rotina e objetivo real.</p>
+            </div>
+          </div>
+          <div class="method-step">
+            <div class="step-num">02</div>
+            <div class="step-content">
+              <h3>Treino baseado em tensão mecânica</h3>
+              <p>Priorizamos carga progressiva e amplitude — o estímulo que realmente gera resultados a longo prazo.</p>
+            </div>
+          </div>
+          <div class="method-step">
+            <div class="step-num">03</div>
+            <div class="step-content">
+              <h3>Dieta adaptada à sua vida</h3>
+              <p>Plano alimentar pensado para ser sustentável — não uma dieta que você abandona na segunda semana.</p>
+            </div>
+          </div>
+          <div class="method-step">
+            <div class="step-num">04</div>
+            <div class="step-content">
+              <h3>Acompanhamento contínuo</h3>
+              <p>WhatsApp direto com o consultor para dúvidas, correções e ajustes ao longo de todo o plano.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="method-visual fade-up" style="transition-delay:0.2s">
+        <div class="method-visual-bg"></div>
+        <div class="method-visual-content">
+          <div class="method-visual-label">RESULTADOS TÍPICOS EM 90 DIAS</div>
+          <div class="result-bar">
+            <div class="result-bar-label"><span>Perda de gordura</span><span>↑ expressiva</span></div>
+            <div class="result-bar-track"><div class="result-bar-fill" style="--w:82%"></div></div>
+          </div>
+          <div class="result-bar">
+            <div class="result-bar-label"><span>Ganho de massa magra</span><span>↑ consistente</span></div>
+            <div class="result-bar-track"><div class="result-bar-fill" style="--w:68%;animation-delay:0.2s"></div></div>
+          </div>
+          <div class="result-bar">
+            <div class="result-bar-label"><span>Aderência ao plano</span><span>↑ alta</span></div>
+            <div class="result-bar-track"><div class="result-bar-fill" style="--w:91%;animation-delay:0.4s"></div></div>
+          </div>
+          <div class="result-bar">
+            <div class="result-bar-label"><span>Evolução de força</span><span>↑ progressiva</span></div>
+            <div class="result-bar-track"><div class="result-bar-fill" style="--w:75%;animation-delay:0.6s"></div></div>
+          </div>
+          <div class="method-testimonial">
+            <p>"Nunca achei que fosse conseguir. Em 3 meses de NutriCore já estava usando roupas que não usava há 2 anos."</p>
+            <div class="method-testimonial-author">— Aluna NutriCore</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INCLUDES -->
+<section class="includes">
+  <div class="container">
+    <div style="text-align:center" class="fade-up">
+      <div class="section-tag">O QUE ESTÁ INCLUÍDO</div>
+      <h2 class="section-title">Tudo que você precisa para <em>transformar</em></h2>
+      <p class="section-sub" style="margin:0 auto">Uma consultoria completa — treino, dieta e suporte — em um só lugar.</p>
+    </div>
+    <div class="includes-grid" style="margin-top:56px">
+      <div class="include-card fade-up">
+        <div class="include-icon">🏋️</div>
+        <h3>Ficha de Treino Personalizada</h3>
+        <p>Montada do zero para você — considerando seu nível, disponibilidade, equipamentos e objetivos. Atualizada a cada ciclo.</p>
+      </div>
+      <div class="include-card fade-up" style="transition-delay:0.1s">
+        <div class="include-icon">🥗</div>
+        <h3>Plano Alimentar Individualizado</h3>
+        <p>Dieta elaborada para encaixar na sua rotina e acelerar os resultados. Sem fórmulas genéricas, sem sofrimento desnecessário.</p>
+      </div>
+      <div class="include-card fade-up" style="transition-delay:0.2s">
+        <div class="include-icon">💬</div>
+        <h3>Suporte via WhatsApp</h3>
+        <p>Acesso direto ao consultor durante todo o período do plano para tirar dúvidas, reportar dores e receber correções.</p>
+      </div>
+      <div class="include-card fade-up" style="transition-delay:0.3s">
+        <div class="include-icon">📹</div>
+        <h3>Correção de Execução</h3>
+        <p>Manda o vídeo do exercício e recebe feedback sobre a técnica. Menos risco de lesão, mais resultado por série.</p>
+      </div>
+      <div class="include-card fade-up" style="transition-delay:0.4s">
+        <div class="include-icon">📈</div>
+        <h3>Progressão de Cargas</h3>
+        <p>Acompanhamento da evolução de carga em cada exercício para garantir progressão contínua e evitar estagnação.</p>
+      </div>
+      <div class="include-card fade-up" style="transition-delay:0.5s">
+        <div class="include-icon">🔄</div>
+        <h3>Ajustes e Atualizações</h3>
+        <p>O treino e a dieta evoluem com você. Ajustes feitos conforme seu feedback e resultados ao longo do plano.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing" id="planos">
+  <div class="container">
+    <div style="text-align:center" class="fade-up">
+      <div class="section-tag">PLANOS</div>
+      <h2 class="section-title">Escolha seu <em>plano</em></h2>
+      <p class="section-sub" style="margin:0 auto">Sem contratos longos. Sem letras miúdas. Só resultado.</p>
+    </div>
+    <div class="pricing-grid">
+      <!-- MENSAL -->
+      <div class="pricing-card standard fade-up">
+        <div class="pricing-plan">PLANO MENSAL</div>
+        <div class="pricing-price">
+          <span class="price-currency">R$</span>
+          <span class="price-amount">400</span>
+        </div>
+        <div class="pricing-period price-period" style="color:var(--muted);font-size:14px;margin-bottom:6px">/mês</div>
+        <div class="pricing-note">Renovação mensal</div>
+        <div class="pricing-divider"></div>
+        <div class="pricing-features">
+          <div class="pricing-feature"><div class="feat-check">✓</div> Ficha de treino personalizada</div>
+          <div class="pricing-feature"><div class="feat-check">✓</div> Plano alimentar individualizado</div>
+          <div class="pricing-feature"><div class="feat-check">✓</div> Suporte via WhatsApp</div>
+          <div class="pricing-feature"><div class="feat-check">✓</div> Correção de exercícios</div>
+          <div class="pricing-feature"><div class="feat-check">✓</div> Ajustes durante o mês</div>
+        </div>
+        <a href="https://wa.me/5566996035654?text=Olá!%20Quero%20contratar%20o%20plano%20mensal%20da%20NutriCore%20por%20R$400." class="btn-pricing-standard" target="_blank">Começar agora</a>
+      </div>
+      <!-- TRIMESTRAL -->
+      <div class="pricing-card featured fade-up" style="transition-delay:0.15s">
+        <div class="pricing-badge">MAIS ESCOLHIDO</div>
+        <div class="pricing-plan">PLANO TRIMESTRAL</div>
+        <div class="pricing-price">
+          <span class="price-currency">R$</span>
+          <span class="price-amount">350</span>
+        </div>
+        <div class="pricing-period price-period" style="font-size:14px;margin-bottom:6px">/mês</div>
+        <div class="pricing-note">Cobrado R$ 1.050 a cada 3 meses · Economia de R$ 150</div>
+        <div class="pricing-divider"></div>
+        <div class="pricing-features">
+          <div class="pricing-feature"><div class="feat-check">✓</div> Tudo do plano mensal</div>
+          <div class="pricing-feature"><div class="feat-check">✓</div> 3 meses de acompanhamento contínuo</div>
+          <div class="pricing-feature"><div class="feat-check">✓</div> Evolução de ficha a cada ciclo</div>
+          <div class="pricing-feature"><div class="feat-check">✓</div> Prioridade no suporte</div>
+          <div class="pricing-feature"><div class="feat-check" style="background:rgba(201,168,76,0.2);color:var(--gold)">★</div> <span style="color:rgba(255,255,255,0.9)">Melhor custo-benefício</span></div>
+        </div>
+        <a href="https://wa.me/5566996035654?text=Olá!%20Quero%20contratar%20o%20plano%20trimestral%20da%20NutriCore%20por%20R$350/mês." class="btn-pricing-featured" target="_blank">Quero esse plano</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq">
+  <div class="container">
+    <div style="text-align:center" class="fade-up">
+      <div class="section-tag">DÚVIDAS FREQUENTES</div>
+      <h2 class="section-title">Perguntas <em>frequentes</em></h2>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">
+          Como funciona o acompanhamento pelo WhatsApp?
+          <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-answer">Você tem acesso direto ao consultor pelo WhatsApp durante todo o período do seu plano. Pode tirar dúvidas sobre o treino, enviar vídeos para correção de execução, reportar dores ou desconfortos e solicitar ajustes. O objetivo é que você nunca fique sem resposta.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">
+          Preciso ter academia para começar?
+          <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-answer">Não necessariamente. O treino é montado de acordo com o que você tem disponível — seja academia completa, academia simples ou treino em casa com equipamentos básicos. Isso é mapeado na anamnese inicial.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">
+          A dieta é muito restritiva?
+          <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-answer">Não. O plano alimentar é construído para ser sustentável a longo prazo, respeitando sua rotina, preferências alimentares e restrições. A ideia não é uma dieta que você abandona em duas semanas, mas um hábito que você consegue manter.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">
+          Posso começar mesmo sendo iniciante?
+          <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-answer">Sim! A NutriCore atende todos os níveis. Para iniciantes, o treino é montado com progressão segura, foco na técnica de execução e exercícios adequados ao seu momento atual. A evolução é gradual e acompanhada de perto.</div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">
+          Como faço para contratar?
+          <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-answer">É simples — basta clicar em qualquer botão desta página e você será direcionado para o WhatsApp. A partir daí, o consultor faz uma conversa inicial, apresenta o processo e, caso faça sentido para você, já inicia o cadastro e o preenchimento da anamnese.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+<section class="cta-final">
+  <div class="cta-final-bg"></div>
+  <div class="cta-final-content fade-up">
+    <h2>Pronto para <em>transformar</em> seu corpo?</h2>
+    <p>O primeiro passo é uma conversa. Sem compromisso, sem pressão.</p>
+    <a href="https://wa.me/5566996035654?text=Olá!%20Quero%20saber%20mais%20sobre%20a%20consultoria%20NutriCore." class="btn-final" target="_blank">
+      💬 Falar com o consultor agora
+    </a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">🍏 NUTRICORE</div>
+  <div class="footer-copy">© 2025 NutriCore Consultoria Esportiva. Todos os direitos reservados.</div>
+</footer>
+
+<script>
+  // FAQ toggle
+  function toggleFaq(el) {
+    el.classList.toggle('open');
+  }
+
+  // Fade-up on scroll
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+  // Trigger bars when visible
+  const barObserver = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.querySelectorAll('.result-bar-fill').forEach(bar => {
+          bar.style.width = bar.style.getPropertyValue('--w') || getComputedStyle(bar).getPropertyValue('--w');
+        });
+      }
+    });
+  }, { threshold: 0.3 });
+  document.querySelectorAll('.method-visual').forEach(el => barObserver.observe(el));
+</script>
+</body>
+</html>
